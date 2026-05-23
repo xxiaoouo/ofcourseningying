@@ -110,21 +110,55 @@ AI Layer (Groq API)
 
 ---
 Terminal Setup Step-by-Step
+
+
 1. Open project folder
+
+
 cd "C:\Users\YOUR_NAME\Documents\HACKATHON\MONEY BUDDY"
+
+
 2. Create virtual environment
+
+
 python -m venv venv
+
+
 3. Enable PowerShell script permission (Windows only)
+
+
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+
 4.  Activate virtual environment
+
+   
 .\venv\Scripts\Activate.ps1
+
+
 If successful, you will see: (venv)
+
+
 5. Install required dependencies
+
+   
 pip install fastapi uvicorn sqlalchemy python-dotenv groq
+
+
 6. Create .env file
+
+   
 Add your API key: GROQ_API_KEY=your_api_key_here
+
+
 7. Run backend server
+
+   
 uvicorn main:app –reload
+
+
 8. Open frontend
+
+   
 Open: index.html
 
