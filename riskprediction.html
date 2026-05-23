@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Risk Prediction - AI Money Buddy</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <div class="phone-frame" style="position:relative; height:100vh; overflow:hidden;">
+    <div class="app" style="display:flex; flex-direction:column; height:715xh;">
+
+      <header class="banner" style="background:#e7e4e1; color:white;">
+        <h1>Debt Risk Prediction</h1>
+        <p>Predict future balance</p>
+      </header>
+
+      <main style="flex:1; overflow-y:auto;">
+
+        <div class="card" style="background:#f4f7f4;">
+          <label for="riskRange">Predict for:</label>
+          <select id="riskRange">
+            <option value="3weeks" selected>Remaining 3 Weeks</option>
+            <option value="2weeks">Remaining 2 Weeks</option>
+            <option value="1week">Remaining 1 Week</option>
+          </select>
+        </div>
+
+        <div class="card" style="background:#f4f7f4;">
+          <h3>Balance Trend</h3>
+          <canvas id="balanceChart"></canvas>
+        </div>
+
+        <div class="card" id="riskAlert" style="background:#f4f7f4;">
+          <h3>Risk Alert</h3>
+          <p id="riskMessage">Analyzing your spending pattern...</p>
+
+          <!-- ✅ FIX: add id -->
+          <button id="suggestBtn" class="suggest-btn">
+  See Suggestions
+</button>
+     
+        </div>
+
+        <div style="height:90px;"></div>
+
+      </main>
+
+    <!-- NAVBAR（Key: lock at bottom） -->
+      <nav class="bottom-nav" style="position:absolute; bottom:0; left:0; right:0;">
+        <a href="index.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>Home</span>
+        </a>
+
+        <a href="aichat.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Chat</span>
+        </a>
+
+        <a href="analysis.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <span>Analysis</span>
+        </a>
+
+        <a href="riskprediction.html" class="nav-item active">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span>Risk</span>
+        </a>
+
+        <a href="debt.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2"/>
+            <line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          <span>Debt</span>
+        </a>
+
+        <a href="me.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Me</span>
+        </a>
+      </nav>
+
+    </div>
+  </div>
+
+  <style>
+  .suggest-btn{
+    background:#198f56;
+    color:white;
+    padding:10px 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    transition:0.2s;
+  }
+
+  .suggest-btn:hover{
+    background:#a5dbbb;
+    transform:scale(1.03);
+  }
+</style>
+
+<script>
+const ctx = document.getElementById('balanceChart').getContext('2d');
+const riskMessage = document.getElementById('riskMessage');
+const riskRange = document.getElementById('riskRange');
+const suggestBtn = document.getElementById("suggestBtn");
+
+const budget = parseFloat(localStorage.getItem("budget")) || 1000;
+const spent = parseFloat(localStorage.getItem("spent")) || 200;
+
+let chart;
+
+function generatePrediction(range){
+  let balance = budget - spent;
+  let labels = [];
+  let futureBalances = [];
+
+  const days =
+    range === "3weeks" ? 22 :
+    range === "2weeks" ? 15 : 8;
+
+  labels = Array.from({length: days}, (_, i) => `Day ${i}`);
+
+  for(let i=0;i<days;i++){
+    balance -= (spent/days);
+    futureBalances.push(balance);
+  }
+
+  if(chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Predicted Balance (RM)',
+        data: futureBalances,
+        borderColor: '#7da88b',
+        fill: false,
+        tension: 0.3
+      }]
+    }
+  });
+
+  const last = futureBalances.at(-1);
+
+  riskMessage.innerText =
+    last <= 0 ? "Risk: Balance may run out soon."
+    : last < budget * 0.2 ? "Warning: Balance will be low soon."
+    : "Balance looks stable.";
+}
+
+generatePrediction("3weeks");
+
+riskRange.addEventListener("change", e => {
+  generatePrediction(e.target.value);
+});
+
+/* ⭐ AI BUTTON */
+suggestBtn.addEventListener("click", async () => {
+
+  riskMessage.innerText = "Generating AI suggestions...";
+  riskMessage.style.color = "#7da88b";
+
+  try {
+    const res = await fetch("http://127.0.0.1:8000/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: `
+User budget: ${budget}
+User spent: ${spent}
+
+Give 3 financial suggestions:
+1. saving advice
+2. risk warning
+3. spending improvement tip
+        `
+      })
+    });
+
+    const data = await res.json();
+
+    riskMessage.innerText = data.reply;
+    riskMessage.style.color = "#3c7a5b";
+
+  } catch (e) {
+    riskMessage.innerText = "AI unavailable";
+    riskMessage.style.color = "red";
+  }
+});
+</script>
+
+</body>
+</html>

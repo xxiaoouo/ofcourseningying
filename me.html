@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Me - AI Money Buddy</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body{
+      background:#f6f7f5;
+      font-family: Arial, sans-serif;
+      margin:0;
+      color:#2f3b33;
+    }
+
+    .phone-frame{
+      position:relative;
+      height:100vh;
+      overflow:hidden;
+    }
+
+    .app{
+      display:flex;
+      flex-direction:column;
+      height:100vh;
+    }
+
+    .banner{
+      background:#e7ede7;
+      padding:20px;
+      text-align:center;
+      color:#2f3b33;
+    }
+
+    .profile-header{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    }
+
+    .avatar{
+      width:90px;
+      height:90px;
+      border-radius:50%;
+      object-fit:cover;
+      border:4px solid #7da88b;
+      background:white;
+    }
+
+    main{
+      flex:1;
+      overflow-y:auto;
+      padding-bottom:100px;
+    }
+
+    h2{
+      margin-left:15px;
+      margin-top:20px;
+      color:#3c4a41;
+    }
+
+    .card{
+      background:#f4f7f4;
+      padding:18px;
+      margin:12px;
+      border-radius:14px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .edit-btn{
+      margin:12px;
+      width:calc(100% - 24px);
+      background:#198f56;
+      color:white;
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      font-size:15px;
+      cursor:pointer;
+    }
+
+    .edit-btn:hover{
+      background:#a5dbbb;
+    }
+
+    button{
+      background:#198f56;
+      color:white;
+      padding:10px 18px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      margin-top:10px;
+    }
+
+    button:hover{
+      background:#a5dbbb;
+    }
+
+    .modal{
+      display:none;
+      position:fixed;
+      z-index:1000;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.35);
+      justify-content:center;
+      align-items:center;
+    }
+
+    .modal-content{
+      background:#f4f7f4;
+      padding:25px;
+      border-radius:16px;
+      width:85%;
+      max-width:350px;
+    }
+
+    .modal-content label{
+      display:block;
+      margin-top:12px;
+      margin-bottom:6px;
+    }
+
+    .modal-content input{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid #d7dfd7;
+    }
+
+    .nav-item{
+      text-decoration:none;
+      color:#3c4a41;
+      font-size:13px;
+      text-align:center;
+    }
+
+    .nav-item.active{
+      color:#7da88b;
+      font-weight:bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="phone-frame">
+<div class="app">
+
+  <!-- Banner -->
+  <header class="banner" style="padding-top:45px;">
+    <h1>BANK ISLAM</h1>
+  </header>
+
+  <header class="banner">
+    <div class="profile-header">
+      <img src="user.png" class="avatar">
+      <p id="userNameDisplay">username</p>
+    </div>
+  </header>
+
+  <main>
+
+    <h2>Profile</h2>
+
+    <div class="card">
+
+      <p><b>Birth Date</b>: <span id="birthday">unknown</span></p>
+
+      <p><b>Contact Number</b>: +60 <span id="phone"></span></p>
+
+      <p><b>Referral code</b>: <span id="instagram">JTG0123</span></p>
+
+      <p><b>About</b>: Bank Islam 0.3.10 version</p>
+
+    </div>
+
+    <button class="edit-btn" onclick="openModal()">
+      Edit
+    </button>
+
+  </main>
+
+  <!-- NAVBAR（Key: lock at bottom） -->
+      <nav class="bottom-nav" style="position:absolute; bottom:0; left:0; right:0;">
+        <a href="index.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>Home</span>
+        </a>
+
+        <a href="aichat.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Chat</span>
+        </a>
+
+        <a href="analysis.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <span>Analysis</span>
+        </a>
+
+        <a href="riskprediction.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span>Risk</span>
+        </a>
+
+        <a href="debt.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2"/>
+            <line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          <span>Debt</span>
+        </a>
+
+        <a href="me.html" class="nav-item active">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Me</span>
+        </a>
+      </nav>
+</div>
+</div>
+
+
+<!-- MODAL -->
+<div id="editModal" class="modal">
+
+  <div class="modal-content">
+
+    <h2>Edit Profile</h2>
+
+    <label>Username:</label>
+    <input type="text" id="editUsername">
+
+    <label>Birth Date:</label>
+    <input type="date" id="editBirthday">
+
+    <label>Contact Number (+60):</label>
+    <input type="text" id="editPhone" maxlength="10">
+
+    <label>Password:</label>
+    <input type="password" id="editPassword">
+
+    <button onclick="saveProfile()">Save</button>
+    <button onclick="closeModal()">Cancel</button>
+
+  </div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+
+function openModal(){
+  document.getElementById("editModal").style.display = "flex";
+}
+
+function closeModal(){
+  document.getElementById("editModal").style.display = "none";
+}
+
+async function saveProfile(){
+
+  const username = document.getElementById("editUsername").value;
+  const birthday = document.getElementById("editBirthday").value;
+  const phone = document.getElementById("editPhone").value;
+  const password = document.getElementById("editPassword").value;
+
+  // localStorage ( for UI)
+  localStorage.setItem("username", username);
+  localStorage.setItem("birthday", birthday);
+  localStorage.setItem("phone", phone);
+  localStorage.setItem("password", password);
+
+  // UI update
+  if (username)
+    document.getElementById("userNameDisplay").innerText = username;
+
+  if (birthday)
+    document.getElementById("birthday").innerText = birthday;
+
+  if (phone)
+    document.getElementById("phone").innerText = phone;
+
+  // ===== SAVE TO DATABASE =====
+  try {
+    await fetch("http://127.0.0.1:8000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: username
+      })
+    });
+  } catch (err) {
+    console.error("DB save failed:", err);
+  }
+
+  closeModal();
+}
+
+// LOAD DATA
+window.addEventListener("DOMContentLoaded", () => {
+
+  const username = localStorage.getItem("username");
+  const birthday = localStorage.getItem("birthday");
+  const phone = localStorage.getItem("phone");
+
+  if (username)
+    document.getElementById("userNameDisplay").innerText = username;
+
+  if (birthday)
+    document.getElementById("birthday").innerText = birthday;
+
+  if (phone)
+    document.getElementById("phone").innerText = phone;
+
+});
+
+</script>
+
+</body>
+</html>

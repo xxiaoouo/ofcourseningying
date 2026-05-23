@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Money Buddy — Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+ 
+ <div class="phone-frame">
+  <div class="app">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div>
+        <div class="greeting-sub">Good morning,</div>
+        <div class="greeting-main">Hello, User 👋</div>
+      </div>
+      <div class="user-avatar">U</div>
+    </header>
+ 
+    <!-- Scrollable Content -->
+    <main class="scroll-content">
+ 
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Monthly Income</div>
+          <div class="stat-value">RM 3,500</div>
+          <div class="stat-badge">↑ +5.2% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Spent</div>
+          <div class="stat-value">RM <span id="statSpent">0</span></div>
+          <div class="stat-badge" id="spentBadge">Set budget</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Saved</div>
+          <div class="stat-value">RM <span id="statSaved">0</span></div>
+          <div class="stat-badge" id="savedBadge">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Health Score</div>
+          <div class="stat-value"><span id="statScore">85</span>/100</div>
+          <div class="stat-badge" id="scoreBadge">Doing okay</div>
+        </div>
+      </div>
+ 
+      <!-- Financial Health Card -->
+      <div class="card health-card">
+        <div class="card-header">
+          <span class="card-title">Financial Health</span>
+          <span class="pill">This week</span>
+        </div>
+        <div class="health-body">
+          <div class="health-ring">
+            <canvas id="healthScore" width="90" height="90"></canvas>
+            <div class="ring-score">
+              <span id="ringScore">85</span>
+              <span class="ring-sub">/100</span>
+            </div>
+          </div>
+          <div class="health-text">
+            <div class="health-status" id="healthStatus">Doing okay</div>
+            <div class="health-desc" id="healthDesc">Enter your budget and spending below to get a personalised summary.</div>
+            <div class="health-link">Full report →</div>
+          </div>
+        </div>
+        <div class="health-metrics">
+          <div class="metric">
+            <div class="metric-label">Spending</div>
+            <div class="metric-value" id="metricSpending">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Savings</div>
+            <div class="metric-value" id="metricSavings">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Debt</div>
+            <div class="metric-value" id="metricDebt">Clear</div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Spending Summary Card -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Spending Summary</span>
+        </div>
+        <div class="tab-group">
+          <button class="tab-btn">Daily</button>
+          <button class="tab-btn active">Weekly</button>
+          <button class="tab-btn">Monthly</button>
+        </div>
+        <div class="input-group">
+          <div class="input-label">Monthly Budget (RM)</div>
+          <div class="rm-input">
+            <span class="rm-prefix">RM</span>
+            <input type="number" id="monthlyBudget" placeholder="e.g. 2000" oninput="updateSpending()">
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-label">Amount Spent — weekly</div>
+          <div class="rm-input">
+            <span class="rm-prefix">RM</span>
+            <input type="number" id="spentInput" placeholder="e.g. 120" oninput="updateSpending()">
+          </div>
+        </div>
+        <div class="progress-section">
+          <div class="progress-row">
+            <span class="progress-hint">RM <span id="spent">0</span> / RM <span id="allowed">—</span></span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+          </div>
+          <div class="progress-hint" id="overspendComment">Enter your monthly budget to get started.</div>
+        </div>
+      </div>
+ 
+      <!-- Recent Transactions -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Recent Transactions</span>
+          <span class="see-all">See all →</span>
+        </div>
+        <div class="tx-list">
+          <div class="tx-item">
+            <div class="tx-icon">💼</div>
+            <div class="tx-info">
+              <div class="tx-name">Salary</div>
+              <div class="tx-cat">Income · May 1</div>
+            </div>
+            <div class="tx-amount income">+RM 3,500.00</div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon">🚌</div>
+            <div class="tx-info">
+              <div class="tx-name">Touch n Go</div>
+              <div class="tx-cat">Transport · May 17</div>
+            </div>
+            <div class="tx-amount expense">−RM 12.00</div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon">🍔</div>
+            <div class="tx-info">
+              <div class="tx-name">Grab Food</div>
+              <div class="tx-cat">Food & Drink · May 18</div>
+            </div>
+            <div class="tx-amount expense">−RM 24.50</div>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon">🛒</div>
+            <div class="tx-info">
+              <div class="tx-name">Groceries</div>
+              <div class="tx-cat">Shopping · May 16</div>
+            </div>
+            <div class="tx-amount expense">−RM 78.30</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+ 
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item active">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </a>
+      <a href="aichat.html" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Chat</span>
+      </a>
+      <a href="analysis.html" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Analysis</span>
+      </a>
+      <a href="riskprediction.html" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Risk</span>
+      </a>
+      <a href="debt.html" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <span>Debt</span>
+      </a>
+      <a href="me.html" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Me</span>
+      </a>
+    </nav>
+ 
+  </div>
+    </div>
+</div>
+
+  <script>
+    const ctx = document.getElementById('healthScore').getContext('2d');
+    let score = 85;
+    const healthChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: [score, 100 - score],
+          backgroundColor: ['#4D7E6E', '#EAE8E3'],
+          borderWidth: 0,
+          circumference: 270,
+          rotation: 225,
+        }]
+      },
+      options: {
+        cutout: '78%',
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        animation: { animateRotate: true, duration: 800 }
+      }
+    });
+ 
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+ 
+    function updateSpending() {
+      const budget = parseFloat(document.getElementById('monthlyBudget').value) || 0;
+      const spent  = parseFloat(document.getElementById('spentInput').value) || 0;
+      const saved  = Math.max(0, budget - spent);
+      const pct    = budget > 0 ? Math.min((spent / budget) * 100, 100) : 0;
+      const over   = spent > budget && budget > 0;
+ 
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressFill').style.backgroundColor = over ? '#B05050' : '#4D7E6E';
+      document.getElementById('spent').textContent   = spent.toLocaleString('en-MY', {minimumFractionDigits:2});
+      document.getElementById('allowed').textContent = budget > 0 ? budget.toLocaleString('en-MY', {minimumFractionDigits:2}) : '—';
+      document.getElementById('overspendComment').textContent = budget === 0
+        ? 'Enter your monthly budget to get started.'
+        : over
+          ? `⚠️ Overspent by RM ${(spent - budget).toFixed(2)}`
+          : `RM ${saved.toFixed(2)} remaining this month.`;
+ 
+      document.getElementById('statSpent').textContent  = spent.toLocaleString('en-MY', {minimumFractionDigits:2});
+      document.getElementById('statSaved').textContent  = saved.toLocaleString('en-MY', {minimumFractionDigits:2});
+      document.getElementById('spentBadge').textContent = budget > 0 ? (over ? '⚠ Over budget' : `${pct.toFixed(0)}% used`) : 'Set budget';
+      document.getElementById('savedBadge').textContent = budget > 0 ? `+${((saved/budget)*100).toFixed(0)}% saved` : '—';
+ 
+      let newScore = 85;
+      if (budget > 0) {
+        if (pct <= 50)       newScore = 95;
+        else if (pct <= 70)  newScore = 85;
+        else if (pct <= 90)  newScore = 72;
+        else if (pct <= 100) newScore = 55;
+        else                 newScore = 30;
+      }
+      score = newScore;
+      healthChart.data.datasets[0].data = [score, 100 - score];
+      healthChart.update();
+      document.getElementById('ringScore').textContent = score;
+      document.getElementById('statScore').textContent = score;
+ 
+      const statusMap = {95:'Great!', 85:'Doing okay', 72:'Doing okay', 55:'Watch out', 30:'Critical'};
+      const descMap = {
+        95: 'Spent less than half your budget. Savings on track!',
+        85: 'Spending reasonable. Keep it up to hit your savings goal.',
+        72: 'Used most of your budget. Slow down this week.',
+        55: 'Almost at your limit. Review expenses now.',
+        30: '⚠️ Overspent. Time to cut back and review your plan.'
+      };
+      document.getElementById('healthStatus').textContent = statusMap[score];
+      document.getElementById('healthDesc').textContent   = descMap[score];
+      document.getElementById('scoreBadge').textContent   = statusMap[score];
+      document.getElementById('metricSpending').textContent = pct > 90 ? 'Watch' : pct > 70 ? 'Okay' : 'Good';
+      document.getElementById('metricSavings').textContent  = saved > 0 ? 'Great' : '—';
+    }
+  </script>
+</body>
+</html>

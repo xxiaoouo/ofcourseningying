@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Debt Manager - AI Money Buddy</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body{
+      background:#f6f7f5;
+      font-family: Arial, sans-serif;
+      margin:0;
+      padding:0;
+    }
+
+    .banner{
+      background:#e7ede7;
+      padding:15px;
+      text-align:center;
+      color:#2f3b33;
+    }
+
+    .card{
+      background:#f4f7f4;
+      padding:15px;
+      margin:10px;
+      border-radius:12px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .progress-bar{
+      width:100%;
+      background:#e6ebe6;
+      border-radius:8px;
+      overflow:hidden;
+      height:12px;
+      margin-top:5px;
+    }
+
+    .progress-fill{
+      height:100%;
+      transition:width 0.3s ease;
+    }
+
+    button{
+      background:#198f56;
+      color:white;
+      padding:10px 20px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      transition:0.2s;
+      margin-top:10px;
+    }
+
+    button:hover{
+      background:#a5dbbb;
+    }
+
+  
+    .nav-item{
+      color:#3c4a41;
+      text-decoration:none;
+      font-size:12px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:3px;
+    }
+
+    .nav-item.active{
+      color:#7da88b;
+      font-weight:bold;
+    }
+
+    main{
+      flex:1;
+      overflow-y:auto;
+      padding-bottom:120px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="phone-frame" style="position:relative; height:100vh; overflow:hidden;">
+
+<div class="app" style="display:flex; flex-direction:column; height:715hx;">
+
+<!-- HEADER -->
+<header class="banner">
+  <h1>Smart Debt Manager</h1>
+  <p>Debt Tracking Dashboard</p>
+</header>
+
+<main>
+
+  <!-- ✅ FIX: INPUT SECTION -->
+  <div class="card">
+    <h3>Add New Debt</h3>
+
+    <input id="debtName" placeholder="Debt name"
+      style="width:100%;padding:8px;margin:5px 0;">
+
+    <input id="debtAmount" placeholder="Total amount (RM)"
+      style="width:100%;padding:8px;margin:5px 0;">
+
+    <button onclick="addDebt()">Add Debt</button>
+  </div>
+
+  <!-- EXISTING DEBTS -->
+  <div class="card">
+    <h3>BNPL - Shopee</h3>
+    <p>RM 150 / RM 300</p>
+
+    <div class="progress-bar">
+      <div class="progress-fill" style="width:50%; background:#7da88b;"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Credit Card</h3>
+    <p>RM 450 / RM 1,000</p>
+
+    <div class="progress-bar">
+      <div class="progress-fill" style="width:45%; background:#6f9f86;"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Personal Loan</h3>
+    <p>RM 1,200 / RM 3,000</p>
+
+    <div class="progress-bar">
+      <div class="progress-fill" style="width:40%; background:#5f8f78;"></div>
+    </div>
+  </div>
+
+  <!-- AI -->
+  <div class="card" style="border-left:5px solid #7da88b;">
+    <h3>Recommended Action</h3>
+
+    <p id="recommendation"
+       style="white-space:pre-line; line-height:1.6; max-height:300px; overflow-y:auto;">
+      Pay Credit Card first to reduce interest faster.
+    </p>
+
+    <button id="repaymentBtn">View Repayment Plan</button>
+  </div>
+
+</main>
+
+    <!-- NAVBAR（Key: lock at bottom） -->
+      <nav class="bottom-nav" style="position:absolute; bottom:0; left:0; right:0;">
+        <a href="index.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>Home</span>
+        </a>
+
+        <a href="aichat.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Chat</span>
+        </a>
+
+        <a href="analysis.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <span>Analysis</span>
+        </a>
+
+        <a href="riskprediction.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span>Risk</span>
+        </a>
+
+        <a href="debt.html" class="nav-item active">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2"/>
+            <line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          <span>Debt</span>
+        </a>
+
+        <a href="me.html" class="nav-item">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Me</span>
+        </a>
+      </nav>
+</div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+console.log("🔥 Debt script loaded");
+
+// =====================
+// LOAD FROM DATABASE
+// =====================
+let debts = [];
+
+async function loadDebts() {
+  try {
+    const res = await fetch("http://127.0.0.1:8000/get-debts");
+    debts = await res.json();
+
+    console.log("📦 DB loaded:", debts);
+
+    renderDebts();
+  } catch (err) {
+    console.error("❌ loadDebts failed:", err);
+  }
+}
+
+// =====================
+// RENDER
+// =====================
+function renderDebts() {
+
+  const main = document.querySelector("main");
+  const recommendation = document.getElementById("recommendation");
+
+  if (!main || !recommendation) return;
+
+  document.querySelectorAll(".dynamic-debt").forEach(e => e.remove());
+
+  let html = "";
+
+  debts.forEach(d => {
+    const percent = d.total
+      ? Math.min((d.paid / d.total) * 100, 100)
+      : 0;
+
+    html += `
+      <div class="card dynamic-debt">
+        <h3>${d.name}</h3>
+        <p>RM ${d.paid} / RM ${d.total}</p>
+
+        <div class="progress-bar">
+          <div class="progress-fill"
+               style="width:${percent}%; background:#7da88b;">
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  recommendation.closest(".card")
+    .insertAdjacentHTML("beforebegin", html);
+}
+
+// =====================
+// ADD DEBT → DATABASE
+// =====================
+async function addDebt() {
+
+  const name = document.getElementById("debtName").value;
+  const total = document.getElementById("debtAmount").value;
+
+  if (!name || !total) {
+    alert("fill both");
+    return;
+  }
+
+  await fetch("http://127.0.0.1:8000/add-debt", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name,
+      paid: 0,
+      total: Number(total)
+    })
+  });
+
+  await loadDebts();
+}
+
+// =====================
+// REPAYMENT BUTTON
+// =====================
+window.addEventListener("DOMContentLoaded", () => {
+
+  loadDebts();
+
+  const btn = document.getElementById("repaymentBtn");
+
+  btn.addEventListener("click", async () => {
+
+    const box = document.getElementById("recommendation");
+
+    box.innerText = "AI thinking...";
+    box.style.color = "#7da88b";
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: `
+Debts:
+${debts.map(d => `${d.name}: RM${d.paid}/RM${d.total}`).join("\n")}
+
+Give repayment plan.
+          `
+        })
+      });
+
+      const data = await res.json();
+
+      box.innerText = data.reply;
+      box.style.color = "#3c7a5b";
+
+    } catch (err) {
+      box.innerText = "AI error";
+      box.style.color = "red";
+    }
+  });
+});
+</script>
+</body>
+</html>

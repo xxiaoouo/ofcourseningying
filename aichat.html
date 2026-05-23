@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Chat - AI Money Buddy</title>
+ <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+
+    .back-home { display: inline-block; margin-top: 10px; color: white; text-decoration: none; }
+
+    main {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .quick-questions { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+
+    .quick-btn {
+      flex: 1;
+      min-width: 80px;
+      background: var(--muted);
+      color: rgb(66, 55, 55);
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .quick-btn:hover { background: #f8f8f8; }
+
+    #chatWindow {
+      height: 385px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .user-message { align-self: flex-end; background: #1ea55f; color: white; padding: 10px 14px; border-radius: 12px; max-width: 75%; }
+    .ai-message { align-self: flex-start; background: #3e7cd4; color: #ffffff; padding: 10px 14px; border-radius: 12px; max-width: 75%; }
+
+    .input-area { display: flex; gap: 10px; }
+    #userMessage { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 15px; }
+    #sendBtn { background: #198f56; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; }
+    #sendBtn:hover { background: #a5dbbb; }
+
+  </style>
+</head>
+
+<body>
+<div class="phone-frame">
+  <div class="app">
+    <header class="banner">
+      <h1>AI Financial Assistant</h1>
+      <p>Personalized Advice</p>
+    </header>
+
+    <main>
+      <div class="quick-questions">
+        <button class="quick-btn" data-question="How can I improve my budget?">Budget</button>
+        <button class="quick-btn" data-question="How can I save more money?">Save</button>
+        <button class="quick-btn" data-question="Am I overspending?">Risk</button>
+        <button class="quick-btn" data-question="How should I manage debt?">Debt</button>
+      </div>
+      <div id="chatWindow" class="card"></div>
+      <div class="card input-area">
+        <input type="text" id="userMessage" placeholder="Ask AI about budgeting, saving, debt...">
+        <button id="sendBtn">Send</button>
+      </div>
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </a>
+      <a href="aichat.html" class="nav-item active">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Chat</span>
+      </a>
+      <a href="analysis.html" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Analysis</span>
+      </a>
+      <a href="riskprediction.html" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Risk</span>
+      </a>
+      <a href="debt.html" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <span>Debt</span>
+      </a>
+      <a href="me.html" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Me</span>
+      </a>
+    </nav>
+ 
+  </div>
+</div>
+
+<script>
+const chatWindow = document.getElementById("chatWindow");
+const inputField = document.getElementById("userMessage");
+const sendBtn = document.getElementById("sendBtn");
+
+/* =========================
+   ADD MESSAGE UI
+========================= */
+function addMessage(role, text) {
+
+    const div = document.createElement("div");
+
+    div.className =
+        role === "You"
+        ? "user-message"
+        : "ai-message";
+
+    div.innerText = text;
+
+    chatWindow.appendChild(div);
+
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+/* =========================
+   SEND TO AI
+========================= */
+async function sendToAI(message) {
+
+    // show user msg
+    addMessage("You", message);
+
+    // loading
+    const loading = document.createElement("div");
+
+    loading.className = "ai-message";
+    loading.innerText = "Thinking...";
+
+    chatWindow.appendChild(loading);
+
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:8000/chat",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    message: message
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        loading.remove();
+
+        addMessage(
+            "AI",
+            data.reply || "No AI response."
+        );
+
+    } catch (err) {
+
+        loading.remove();
+
+        addMessage(
+            "AI",
+            "Failed to connect backend"
+        );
+
+        console.error("Fetch error:", err);
+    }
+}
+
+/* =========================
+   SEND BUTTON
+========================= */
+async function handleSend() {
+
+    const text = inputField.value.trim();
+
+    if (!text) return;
+
+    inputField.value = "";
+
+    await sendToAI(text);
+}
+
+/* =========================
+   SEND BUTTON CLICK
+========================= */
+sendBtn.addEventListener(
+    "click",
+    handleSend
+);
+
+/* =========================
+   ENTER KEY
+========================= */
+inputField.addEventListener(
+    "keydown",
+    (e) => {
+
+        if (e.key === "Enter") {
+            handleSend();
+        }
+    }
+);
+
+/* =========================
+   QUICK BUTTONS FIXED
+========================= */
+document.querySelectorAll(".quick-btn")
+.forEach(btn => {
+
+    btn.addEventListener("click", async () => {
+
+        const question =
+            btn.dataset.question;
+
+        await sendToAI(question);
+    });
+});
+
+/* =========================
+   START MESSAGE
+========================= */
+window.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        addMessage(
+            "AI",
+            "Hi I'm your AI Financial Assistant. Ask me anything about budgeting, debt, saving, or spending."
+        );
+    }
+);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+/* Centered layout only for the loading page */
+body.loading-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;          /* Fill the entire screen height */
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: #333;
+  text-align: center;
+  flex-direction: column; /* Keep banner at top, card in center */
+}
+
+/* Banner fixed at the top */
+.banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f39c12;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  z-index: 1000;
+}
+
+/* Card centered */
+.card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  max-width: 90%;
+}

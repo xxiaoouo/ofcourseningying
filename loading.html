@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loading - AI Money Buddy</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #8e44ad, #3498db);
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      flex-direction: column;
+    }
+    .welcome {
+      animation: fadeIn 2s ease-in-out;
+      margin-bottom: 20px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    /* Progress bar */
+    .progress-bar {
+      width: 200px;
+      height: 10px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #2ecc71;
+      animation: loadProgress 2s linear forwards;
+    }
+    @keyframes loadProgress {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+    /* Circular loading animation */
+    .loader {
+      border: 6px solid rgba(255,255,255,0.3);
+      border-top: 6px solid #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-top: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome">
+    <h1 id="welcomeText">Welcome 👋</h1>
+    <p>Loading your AI Money Buddy...</p>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-bar">
+    <div class="progress-fill"></div>
+  </div>
+
+  <script>
+    // Get username from localStorage
+    const userName = localStorage.getItem("userName") || "User";
+    document.getElementById("welcomeText").innerText = `Welcome, ${userName} 👋`;
+
+    // Delay redirect to homepage
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000); // Redirect after 2 seconds
+  </script>
+</body>
+</html>
