@@ -154,7 +154,7 @@ Add your API key: GROQ_API_KEY=your_api_key_here
 7. Run backend server
 
    
-uvicorn main:app –reload
+uvicorn main:app --reload
 
 
 8. Open frontend
