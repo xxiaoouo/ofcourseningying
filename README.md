@@ -72,11 +72,6 @@ Environment & Config:
   
 
 AI Tools Used
-- Figma
-- ChatGPT
-- Claude 
-- Gemini 
-- Copilot
 - Groq API
 
 ---
